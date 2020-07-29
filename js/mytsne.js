@@ -1,9 +1,10 @@
-const model = "heffen.BOWbound10all.PPMIno.LENGTHFOC.SOCPOSnav";
+// const model = "heffen.BOWbound10all.PPMIno.LENGTHFOC.SOCPOSnav";
+const model = "herhalen.LEMMAREL2.PPMIselection.LENGTHFOC.SOCPOSnav";
 d3.select("h3").text("Model: " + model);
 
 Promise.all([
-    d3.csv("data/" + model + ".ttmx.dist.csv"),
-    d3.tsv("data/heffen.variables.tsv")
+    d3.csv("data/" + model+ ".ttmx.dist.csv"),
+    d3.tsv("data/herhalen.variables.tsv")
 ]).then(function (data) {
     const width = 600, height = 600, padding = 30;
     const tokenIds = data[0].columns.map((d) => _.replace(d, /\./g, "/"));
@@ -33,10 +34,12 @@ Promise.all([
 
     // Load senses   
     const senses = tokenIds.map((t) => {
-        return (variables.filter((v) => {
+        const thisRow = variables.filter((v) => {
             return (v["_id"] === t);
-        })[0]["collapsed_sense"]);
+        })[0]
+        return(thisRow !== undefined ? thisRow["collapsed_sense"] : "none");
     });
+    
 
     // Functions
     function runTSNE(perplexity){
